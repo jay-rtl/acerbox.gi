@@ -22,7 +22,7 @@ npm run preview
 
 Keep the filenames below, or update the matching paths in `index.html`.
 
-- Logo: `public/assets/logo/acerbox-logo.png`
+- Logo: `public/assets/logo/acerbox-logo-transparent.png`
 - Hero video: `public/assets/video/hero.mp4`
 - Work videos: `public/assets/video/work-01.mp4` through `work-03.mp4`
 - Work poster images: `public/assets/images/work-01.jpg` through `work-03.jpg`
