@@ -1,0 +1,10 @@
+.reveal, .media-reveal { will-change: transform, opacity; }
+.line-reveal > * { will-change: transform; }
+.magnetic { will-change: transform; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+  .page-loader { display: none; }
+  .reveal, .media-reveal, .line-reveal > *, .hero-title span, .reveal-item { opacity: 1 !important; transform: none !important; clip-path: none !important; }
+}

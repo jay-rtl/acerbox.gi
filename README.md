@@ -1,0 +1,64 @@
+# Acerbox website
+
+A lightweight, one-page Vite website built with vanilla HTML, CSS, JavaScript, GSAP, and ScrollTrigger. The production build is static and can be uploaded directly to Hostinger.
+
+## Local development
+
+Requirements: Node.js 20.19+ (or 22.12+) and npm.
+
+```bash
+npm install
+npm run dev
+```
+
+Open the local URL printed by Vite. To create and test the production build:
+
+```bash
+npm run build
+npm run preview
+```
+
+## Replace the placeholder media
+
+Keep the filenames below, or update the matching paths in `index.html`.
+
+- Logo: `public/assets/logo/acerbox-logo.svg`
+- Hero video: `public/assets/video/hero.mp4`
+- Work videos: `public/assets/video/work-01.mp4` through `work-03.mp4`
+- Work poster images: `public/assets/images/work-01.jpg` through `work-03.jpg`
+- Founder/BTS image: `public/assets/images/founder.jpg`
+- Social sharing image: `public/assets/images/og-image.jpg` at 1200 × 630px
+- Favicon: `public/assets/images/favicon.svg`
+
+Missing files intentionally show clean, branded fallback states. The temporary ACERBOX text in the header disappears automatically when the real SVG logo loads.
+
+## Configure links
+
+Edit the `siteConfig` object at the top of `src/js/main.js`:
+
+```js
+export const siteConfig = {
+  emailAddress: 'hello@acerbox.com',
+  instagramUrl: 'https://instagram.com/your-account',
+  trialShootUrl: 'https://your-form-or-booking-link.com',
+};
+```
+
+Leaving `trialShootUrl` empty sends the visitor to the contact area. Also replace the placeholder canonical and social URLs in `index.html` before launch.
+
+## Hostinger deployment
+
+Run `npm run build`, then upload **the contents inside `dist/`** to `public_html`. Node.js is not needed on the server. Vite uses relative asset paths so the static build works from standard shared hosting.
+
+## Recommended video exports
+
+- MP4 using H.264, no audio for background/preview loops
+- 1080p maximum for most website footage
+- 24 or 30 fps
+- Target 3–6 Mbps for hero video and 2–4 Mbps for previews
+- Keep the hero loop roughly 6–15 seconds and ideally under 8 MB
+- Enable fast start / web optimized metadata
+- Export matching compressed JPG or WebP poster images (roughly 1600–2200px wide)
+- Test all final media on iPhone Safari and Android Chrome
+
+Only the hero video is requested immediately. Portfolio videos load near the viewport and play only on hover/focus or tap, then pause outside the viewport.
