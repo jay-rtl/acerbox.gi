@@ -180,10 +180,19 @@
             <p class="reveal">Acerbox can help with everything from a single video shoot to ongoing social media, advertising, and growth strategy.</p>
             <small class="reveal">Featured client work / 2026</small>
           </div>
-          <div class="feature-film-media media-reveal">
-            <video controls playsinline preload="metadata" aria-label="Featured Acerbox client video">
+          <div class="feature-film-media media-reveal" data-feature-video>
+            <video playsinline preload="metadata" aria-label="Featured Acerbox client video">
               <source src="./assets/video/client-feature.mp4" type="video/mp4" />
             </video>
+            <button class="film-play" type="button" aria-label="Play featured film" data-film-toggle>
+              <span class="film-play-icon" aria-hidden="true"></span>
+              <span class="film-play-copy"><b>Play film</b><small>With sound</small></span>
+            </button>
+            <div class="film-controls" aria-label="Video controls">
+              <button type="button" data-film-toggle aria-label="Pause featured film">Pause</button>
+              <span class="film-progress" aria-hidden="true"><i></i></span>
+              <button type="button" data-film-sound aria-label="Mute featured film">Sound on</button>
+            </div>
           </div>
         </div>
       </section>

@@ -126,11 +126,27 @@ p, h1, h2, h3 { margin-top: 0; }
 .feature-film-copy h2 span { color: transparent; -webkit-text-stroke: 1px rgba(245,243,238,.72); }
 .feature-film-copy > p:not(.eyebrow) { max-width: 34rem; margin: clamp(3rem, 6vw, 6rem) 0 0 auto; color: #bbb; font-size: clamp(1rem, 1.4vw, 1.25rem); }
 .feature-film-copy small { display: block; margin: 2rem 0 0 auto; color: var(--accent); font-size: .62rem; font-weight: 600; text-transform: uppercase; letter-spacing: .16em; }
-.feature-film-media { position: relative; width: 100%; aspect-ratio: 9/16; overflow: hidden; padding: .6rem; border: 1px solid rgba(245,243,238,.26); background: #000; box-shadow: 2rem 2rem 0 rgba(0,0,0,.16); }
-.feature-film-media::before, .feature-film-media::after { position: absolute; z-index: 2; top: 1.2rem; color: rgba(245,243,238,.68); font-size: .54rem; font-weight: 600; text-transform: uppercase; letter-spacing: .16em; pointer-events: none; }
+.feature-film-media { --film-progress: 0%; position: relative; width: 100%; aspect-ratio: 9/16; overflow: hidden; border: 1px solid rgba(245,243,238,.26); background: #080808; box-shadow: 2rem 2rem 0 rgba(0,0,0,.16); cursor: pointer; }
+.feature-film-media::before, .feature-film-media::after { position: absolute; z-index: 4; top: 1.2rem; color: rgba(245,243,238,.68); font-size: .54rem; font-weight: 600; text-transform: uppercase; letter-spacing: .16em; pointer-events: none; transition: opacity .35s; }
 .feature-film-media::before { content: "ACERBOX / FILM 001"; left: 1.4rem; }
 .feature-film-media::after { content: "PLAY WITH SOUND"; right: 1.4rem; }
-.feature-film-media video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.feature-film-media video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.feature-film-media.is-playing::before, .feature-film-media.is-playing::after { opacity: 0; }
+.film-play { position: absolute; z-index: 3; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; width: 100%; border: 0; color: var(--paper); background: linear-gradient(180deg, rgba(5,5,5,.08), rgba(5,5,5,.34)); cursor: pointer; transition: opacity .4s, visibility .4s, background .4s; }
+.film-play:hover { background: linear-gradient(180deg, rgba(5,5,5,.02), rgba(5,5,5,.22)); }
+.film-play-icon { position: relative; display: grid; place-items: center; width: clamp(5rem, 7vw, 7rem); aspect-ratio: 1; border: 1px solid rgba(245,243,238,.72); border-radius: 50%; background: rgba(10,10,10,.18); backdrop-filter: blur(8px); transition: color .3s, background .3s, transform .4s cubic-bezier(.22,1,.36,1); }
+.film-play-icon::before { content: ""; width: 0; height: 0; margin-left: .35rem; border-top: .55rem solid transparent; border-bottom: .55rem solid transparent; border-left: .85rem solid currentColor; }
+.film-play:hover .film-play-icon { color: var(--ink); background: var(--paper); transform: scale(1.06); }
+.film-play-copy { display: grid; gap: .18rem; text-align: center; text-transform: uppercase; letter-spacing: .17em; }
+.film-play-copy b { font-size: .65rem; }
+.film-play-copy small { color: rgba(245,243,238,.58); font-size: .5rem; }
+.feature-film-media.is-playing .film-play { visibility: hidden; opacity: 0; }
+.film-controls { position: absolute; z-index: 5; right: 1.2rem; bottom: 1.15rem; left: 1.2rem; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: .9rem; padding: .7rem .8rem; border: 1px solid rgba(245,243,238,.16); background: rgba(8,8,8,.58); backdrop-filter: blur(12px); opacity: 0; transform: translateY(.7rem); transition: opacity .3s, transform .3s; }
+.feature-film-media.is-playing:hover .film-controls, .feature-film-media.is-playing:focus-within .film-controls { opacity: 1; transform: translateY(0); }
+.film-controls button { padding: 0; border: 0; color: var(--paper); background: transparent; font-size: .52rem; font-weight: 600; text-transform: uppercase; letter-spacing: .13em; cursor: pointer; }
+.film-controls button:hover { color: var(--accent); }
+.film-progress { height: 1px; overflow: hidden; background: rgba(245,243,238,.3); }
+.film-progress i { display: block; width: var(--film-progress); height: 100%; background: var(--accent); }
 
 .work { background: #111; }
 .work-layout { display: grid; grid-template-columns: 1.2fr .8fr; gap: clamp(4rem, 9vw, 10rem) clamp(1.5rem, 4vw, 5rem); align-items: start; }

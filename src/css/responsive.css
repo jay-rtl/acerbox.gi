@@ -88,6 +88,10 @@
   .hero-kicker span:last-child { display: none; }
 }
 
+@media (hover: none) {
+  .feature-film-media.is-playing .film-controls { opacity: 1; transform: translateY(0); }
+}
+
 @media (max-width: 374px) {
   .hero-title { font-size: 3.9rem; }
   .button { min-height: 3.35rem; padding-inline: .85rem; font-size: .6rem; }
