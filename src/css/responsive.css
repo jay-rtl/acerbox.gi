@@ -25,6 +25,7 @@
   .hero-content { justify-content: flex-end; padding-top: 7rem; padding-bottom: 8rem; }
   .hero-kicker { position: absolute; top: 6.2rem; right: 0; left: 0; }
   .hero-title { font-size: clamp(4.25rem, 22vw, 8rem); white-space: normal; }
+  .hero-title img { width: 112%; max-width: none; transform: translateX(-6%); }
   .hero-meta { display: block; margin-top: 1.5rem; }
   .tagline { margin-bottom: 1rem; font-size: .95rem; }
   .service-line { line-height: 1.8; }

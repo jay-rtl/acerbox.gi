@@ -22,7 +22,7 @@ npm run preview
 
 Keep the filenames below, or update the matching paths in `index.html`.
 
-- Logo: `public/assets/logo/acerbox-logo.svg`
+- Logo: `public/assets/logo/acerbox-logo.png`
 - Hero video: `public/assets/video/hero.mp4`
 - Work videos: `public/assets/video/work-01.mp4` through `work-03.mp4`
 - Work poster images: `public/assets/images/work-01.jpg` through `work-03.jpg`
@@ -30,7 +30,7 @@ Keep the filenames below, or update the matching paths in `index.html`.
 - Social sharing image: `public/assets/images/og-image.jpg` at 1200 × 630px
 - Favicon: `public/assets/images/favicon.svg`
 
-Missing files intentionally show clean, branded fallback states. The temporary ACERBOX text in the header disappears automatically when the real SVG logo loads.
+Missing files intentionally show clean, branded fallback states. The temporary ACERBOX text in the header disappears automatically when the real logo loads.
 
 ## Configure links
 
