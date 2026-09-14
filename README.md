@@ -28,8 +28,8 @@ Keep the filenames below, or update the matching paths in `index.html`.
 - Work videos: `public/assets/video/work-01.mp4` through `work-03.mp4`
 - Work poster images: `public/assets/images/work-01.jpg` through `work-03.jpg`
 - Founder/BTS image: `public/assets/images/founder.jpg`
-- Social sharing image: `public/assets/images/og-image.jpg` at 1200 × 630px
-- Favicon: `public/assets/images/favicon.svg`
+- Social sharing image: `public/assets/images/og-image.png`
+- Favicon: currently uses `public/assets/logo/acerbox-logo-transparent.png`
 
 Missing files intentionally show clean, branded fallback states. The temporary ACERBOX text in the header disappears automatically when the real logo loads.
 
@@ -40,12 +40,12 @@ Edit the `siteConfig` object at the top of `src/js/main.js`:
 ```js
 export const siteConfig = {
   emailAddress: 'Acerbox27@gmail.com',
-  instagramUrl: 'https://www.instagram.com/acerbox_?stkn=a3VhajRpNGIwczFx',
+  instagramUrl: 'https://www.instagram.com/acerbox_/',
   trialShootUrl: 'https://your-form-or-booking-link.com',
 };
 ```
 
-Leaving `trialShootUrl` empty sends the visitor to the contact area. Also replace the placeholder canonical and social URLs in `index.html` before launch.
+Leaving `trialShootUrl` empty sends the visitor to the contact area. If the site moves to a custom domain, replace the GitHub Pages URLs in `index.html`, `public/robots.txt`, and `public/sitemap.xml`.
 
 ## Hostinger deployment
 

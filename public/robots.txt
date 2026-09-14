@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jay-rtl.github.io/acerbox.gi/sitemap.xml

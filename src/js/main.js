@@ -7,7 +7,7 @@ import { initMedia } from './media.js';
 
 export const siteConfig = {
   emailAddress: 'Acerbox27@gmail.com',
-  instagramUrl: 'https://www.instagram.com/acerbox_?stkn=a3VhajRpNGIwczFx',
+  instagramUrl: 'https://www.instagram.com/acerbox_/',
   trialShootUrl: '',
 };
 
