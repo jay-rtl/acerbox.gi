@@ -19,11 +19,11 @@ export function initAnimations() {
 
   const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
   intro
-    .to('.page-loader span', { opacity: 0, y: -12, duration: .25, delay: .15 })
-    .to('.page-loader', { opacity: 0, duration: .35, onComplete: () => loader?.remove() }, '<.08')
-    .to('.hero-media', { scale: 1, duration: 1.35 }, '<')
-    .to('.hero-title span', { yPercent: 0, duration: .8 }, '<.08')
-    .to('.reveal-item', { y: 0, opacity: 1, duration: .55, stagger: .09 }, '<.27');
+    .to('.page-loader span', { opacity: 0, y: -12, duration: .5, delay: .5 })
+    .to('.page-loader', { opacity: 0, duration: .6, onComplete: () => loader?.remove() }, '<.15')
+    .to('.hero-media', { scale: 1, duration: 2.4 }, '<')
+    .to('.hero-title span', { yPercent: 0, duration: 1.2 }, '<.5')
+    .to('.reveal-item', { y: 0, opacity: 1, duration: .8, stagger: .16 }, '<.5');
 
   gsap.utils.toArray('.reveal').forEach((element) => {
     gsap.from(element, {
