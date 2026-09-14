@@ -8,6 +8,7 @@ import { initMedia } from './media.js';
 export const siteConfig = {
   emailAddress: 'Acerbox27@gmail.com',
   instagramUrl: 'https://www.instagram.com/acerbox_/',
+  discordUrl: 'https://discord.com/invite/nRRkhPwBA',
   trialShootUrl: '',
 };
 
@@ -18,6 +19,10 @@ const setupLinks = () => {
 
   document.querySelectorAll('.js-instagram').forEach((link) => {
     link.href = siteConfig.instagramUrl;
+  });
+
+  document.querySelectorAll('.js-discord').forEach((link) => {
+    link.href = siteConfig.discordUrl;
   });
 
   document.querySelectorAll('.js-trial').forEach((link) => {

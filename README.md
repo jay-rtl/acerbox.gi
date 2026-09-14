@@ -41,6 +41,7 @@ Edit the `siteConfig` object at the top of `src/js/main.js`:
 export const siteConfig = {
   emailAddress: 'Acerbox27@gmail.com',
   instagramUrl: 'https://www.instagram.com/acerbox_/',
+  discordUrl: 'https://discord.com/invite/nRRkhPwBA',
   trialShootUrl: 'https://your-form-or-booking-link.com',
 };
 ```
@@ -50,6 +51,10 @@ Leaving `trialShootUrl` empty sends the visitor to the contact area. If the site
 ## Hostinger deployment
 
 Run `npm run build`, then upload **the contents inside `dist/`** to `public_html`. Node.js is not needed on the server. Vite uses relative asset paths so the static build works from standard shared hosting.
+
+For the prepared upload package, extract `acerbox-hostinger.zip` and upload everything inside it directly into `public_html`. Confirm that `index.html` and `.htaccess` are at the root of `public_html`, not inside another folder. Enable “show hidden files” in Hostinger File Manager if `.htaccess` is not visible.
+
+Before launching on the final domain, replace every `https://jay-rtl.github.io/acerbox.gi/` URL in `index.html`, `public/robots.txt`, and `public/sitemap.xml` with the production domain, then rebuild the package. This keeps canonical and social SEO signals pointed at the correct host.
 
 ## Recommended video exports
 
