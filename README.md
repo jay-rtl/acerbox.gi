@@ -27,7 +27,7 @@ Keep the filenames below, or update the matching paths in `index.html`.
 - Featured client video: `public/assets/video/client-feature.mp4`
 - Work videos: `public/assets/video/work-01.mp4` through `work-03.mp4`
 - Work poster images: `public/assets/images/work-01.jpg` through `work-03.jpg`
-- Founder/BTS image: `public/assets/images/founder.jpg`
+- Founder portrait: `public/assets/images/founder.jpg`
 - Social sharing image: `public/assets/images/og-image.png`
 - Favicon: currently uses `public/assets/logo/acerbox-logo-transparent.png`
 

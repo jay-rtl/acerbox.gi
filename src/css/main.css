@@ -118,6 +118,27 @@ p, h1, h2, h3 { margin-top: 0; }
 .service-row:hover h3 { transform: translateX(.35rem); }
 .service-row:hover .row-arrow { opacity: 1; transform: translate(3px, -3px); }
 
+.web-package { overflow: hidden; color: var(--ink); background: var(--paper); }
+.web-package::after { content: "WEB"; position: absolute; right: -2vw; bottom: -6vw; color: transparent; font: 700 clamp(10rem, 24vw, 28rem)/.7 var(--heading); letter-spacing: -.09em; -webkit-text-stroke: 1px rgba(11,11,11,.055); pointer-events: none; }
+.package-heading { position: relative; z-index: 1; display: grid; grid-template-columns: 1.25fr .75fr; gap: 4vw; align-items: end; }
+.package-heading .eyebrow { grid-column: 1 / -1; margin-bottom: clamp(3.5rem, 7vw, 7rem); color: #666; }
+.package-heading h2 { margin: 0; font: 600 clamp(4rem, 9vw, 10.5rem)/.82 var(--heading); letter-spacing: -.075em; }
+.package-heading h2 span { color: transparent; -webkit-text-stroke: 1px rgba(11,11,11,.7); }
+.package-intro { max-width: 30rem; margin: 0 0 .75rem; font: 500 clamp(1.15rem, 1.7vw, 1.65rem)/1.35 var(--heading); letter-spacing: -.025em; }
+.package-board { position: relative; z-index: 1; margin-top: clamp(4rem, 8vw, 8rem); border-top: 1px solid rgba(11,11,11,.8); border-bottom: 1px solid rgba(11,11,11,.8); }
+.package-name { display: flex; align-items: center; justify-content: space-between; gap: 2rem; padding: 1.4rem 0; border-bottom: 1px solid rgba(11,11,11,.2); }
+.package-name > span { font: 600 clamp(1.5rem, 2.5vw, 2.75rem)/1 var(--heading); letter-spacing: -.04em; text-transform: uppercase; }
+.package-name small, .package-includes small { color: #656565; font-size: .62rem; text-transform: uppercase; letter-spacing: .12em; }
+.package-includes { display: grid; grid-template-columns: repeat(2, 1fr); margin: 0; padding: 0; list-style: none; }
+.package-includes li { display: grid; grid-template-columns: 2.5rem 1fr; gap: 1rem; min-height: 11rem; padding: 2rem; border-bottom: 1px solid rgba(11,11,11,.16); }
+.package-includes li:nth-child(odd) { border-right: 1px solid rgba(11,11,11,.16); }
+.package-includes li > span { color: var(--accent); font-size: .65rem; font-weight: 600; }
+.package-includes li div { display: flex; flex-direction: column; justify-content: space-between; gap: 2rem; }
+.package-includes b { font: 500 clamp(1.3rem, 2vw, 2rem)/1.05 var(--heading); letter-spacing: -.035em; text-transform: uppercase; }
+.package-footer { display: flex; align-items: center; justify-content: space-between; gap: 3rem; padding: 2rem 0; }
+.package-footer p { max-width: 37rem; margin: 0; color: #555; }
+.package-footer .button { flex: 0 0 auto; }
+
 .feature-film { overflow: hidden; background: #1a1a1a; }
 .feature-film::before { content: "03"; position: absolute; top: 2%; left: -2vw; color: transparent; font: 700 clamp(14rem, 31vw, 38rem)/1 var(--heading); letter-spacing: -.1em; -webkit-text-stroke: 1px rgba(245,243,238,.035); pointer-events: none; }
 .feature-film-grid { display: grid; grid-template-columns: 1fr minmax(20rem, 34rem); gap: clamp(4rem, 10vw, 12rem); align-items: center; }
@@ -180,9 +201,10 @@ p, h1, h2, h3 { margin-top: 0; }
 .about { background: var(--graphite); }
 .about-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(3rem, 8vw, 9rem); align-items: center; }
 .about-media { position: relative; aspect-ratio: 4/5; overflow: hidden; }
-.about-media img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); }
+.about-media img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); transition: filter .7s ease, transform .9s cubic-bezier(.22,1,.36,1); }
+.about-media:hover img { filter: grayscale(.18); transform: scale(1.018); }
 .about-media img.is-missing, .project-media video.is-missing, .hero-media video.is-missing { visibility: hidden; }
-.about-media small { position: absolute; bottom: 1rem; left: 1rem; color: rgba(245,243,238,.55); text-transform: uppercase; letter-spacing: .14em; }
+.about-media small { position: absolute; right: 1rem; bottom: 1rem; left: 1rem; padding: .65rem .8rem; color: rgba(245,243,238,.78); background: rgba(11,11,11,.45); backdrop-filter: blur(8px); font-size: .58rem; text-transform: uppercase; letter-spacing: .14em; }
 .about-content .eyebrow { margin-bottom: 3.5rem; }
 .about-content h2 { margin: 0; font: 600 clamp(3rem, 5.6vw, 6.5rem)/.88 var(--heading); letter-spacing: -.065em; }
 .about-copy { max-width: 40rem; margin: clamp(3rem, 6vw, 6rem) 0 0 auto; color: #bbb; }
