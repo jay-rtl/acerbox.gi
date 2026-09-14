@@ -113,6 +113,10 @@ p, h1, h2, h3 { margin-top: 0; }
 
 .work { background: #111; }
 .work-layout { display: grid; grid-template-columns: 1.2fr .8fr; gap: clamp(4rem, 9vw, 10rem) clamp(1.5rem, 4vw, 5rem); align-items: start; }
+.project-client { width: min(90vw, 31rem); margin: 0 auto clamp(7rem, 12vw, 13rem); }
+.project-client .project-media { aspect-ratio: 9/16; background: #000; cursor: default; }
+.project-client .project-media video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; filter: none; }
+.project-client .project-media:hover video { transform: none; }
 .project-wide { grid-column: 1 / -1; }
 .project-square { margin-top: 30%; }
 .project-media { position: relative; overflow: hidden; background: var(--graphite); cursor: pointer; }

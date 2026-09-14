@@ -6,8 +6,8 @@ import { initAnimations } from './animations.js';
 import { initMedia } from './media.js';
 
 export const siteConfig = {
-  emailAddress: 'hello@acerbox.com',
-  instagramUrl: 'https://instagram.com/',
+  emailAddress: 'Acerbox27@gmail.com',
+  instagramUrl: 'https://www.instagram.com/acerbox_?stkn=a3VhajRpNGIwczFx',
   trialShootUrl: '',
 };
 

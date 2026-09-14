@@ -24,6 +24,7 @@ Keep the filenames below, or update the matching paths in `index.html`.
 
 - Logo: `public/assets/logo/acerbox-logo-transparent.png`
 - Hero video: `public/assets/video/hero.mp4`
+- Featured client video: `public/assets/video/client-feature.mp4`
 - Work videos: `public/assets/video/work-01.mp4` through `work-03.mp4`
 - Work poster images: `public/assets/images/work-01.jpg` through `work-03.jpg`
 - Founder/BTS image: `public/assets/images/founder.jpg`
@@ -38,8 +39,8 @@ Edit the `siteConfig` object at the top of `src/js/main.js`:
 
 ```js
 export const siteConfig = {
-  emailAddress: 'hello@acerbox.com',
-  instagramUrl: 'https://instagram.com/your-account',
+  emailAddress: 'Acerbox27@gmail.com',
+  instagramUrl: 'https://www.instagram.com/acerbox_?stkn=a3VhajRpNGIwczFx',
   trialShootUrl: 'https://your-form-or-booking-link.com',
 };
 ```
