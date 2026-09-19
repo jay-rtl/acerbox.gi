@@ -6,3 +6,5 @@ acerbox-hostinger.zip
 .env
 .env.*
 !.env.example
+.local/
+backend/config.local.php

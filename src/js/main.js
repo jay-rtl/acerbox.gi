@@ -4,6 +4,8 @@ import '../css/animations.css';
 import { initNavigation } from './navigation.js';
 import { initAnimations } from './animations.js';
 import { initMedia } from './media.js';
+import '../css/features.css';
+import { initClientFeatures } from './features.js';
 
 export const siteConfig = {
   emailAddress: 'Acerbox27@gmail.com',
@@ -40,3 +42,4 @@ setupLinks();
 initNavigation();
 initMedia();
 initAnimations();
+initClientFeatures();

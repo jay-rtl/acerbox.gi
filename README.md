@@ -4,6 +4,8 @@ A lightweight, one-page Vite website built with vanilla HTML, CSS, JavaScript, G
 
 ## Local development
 
+For the new persistent reviews/booking features and Jake's management page, see [local setup and safe staging](docs/FEATURES.md). They require the local PHP API and database in addition to Vite. Nothing was automatically deployed; do not use the historical static ZIP as a full backend release.
+
 Requirements: Node.js 20.19+ (or 22.12+) and npm.
 
 ```bash

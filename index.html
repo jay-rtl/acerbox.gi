@@ -99,7 +99,7 @@
         <span data-logo-fallback>ACERBOX</span>
       </a>
       <nav class="desktop-nav" aria-label="Main navigation">
-        <a href="#work">Work</a><a href="#services">Services</a><a href="#about">About</a><a href="#contact">Contact</a>
+        <a href="#work">Work</a><a href="#services">Services</a><a href="#about">About</a><a href="#booking">Book</a><a href="#contact">Contact</a>
         <button class="nav-cta js-contact" type="button">Work With Me <span>↗</span></button>
       </nav>
       <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
@@ -108,7 +108,7 @@
     </header>
 
     <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
-      <nav aria-label="Mobile navigation"><a href="#work">Work</a><a href="#services">Services</a><a href="#about">About</a><a href="#contact">Contact</a><a class="js-discord" href="https://discord.com/invite/nRRkhPwBA" target="_blank" rel="noopener noreferrer">Discord ↗</a></nav>
+      <nav aria-label="Mobile navigation"><a href="#work">Work</a><a href="#services">Services</a><a href="#about">About</a><a href="#booking">Book</a><a href="#contact">Contact</a><a class="js-discord" href="https://discord.com/invite/nRRkhPwBA" target="_blank" rel="noopener noreferrer">Discord ↗</a></nav>
       <button class="text-link js-contact" type="button">Work With Me <span>↗</span></button>
       <p>Pembroke Pines, Florida<br />Serving South Florida</p>
     </div>
@@ -293,6 +293,64 @@
             <p>We make something, you see what I can do, and if it makes sense for both of us, we keep building.</p>
             <a class="button button-dark magnetic js-trial" href="#contact"><span>Apply for a Complimentary Trial Shoot</span><b>↗</b></a>
           </div>
+        </div>
+      </section>
+
+      <section class="client-reviews section" id="reviews" aria-labelledby="reviews-title">
+        <div class="shell">
+          <p class="eyebrow reveal">Client voices</p>
+          <div class="section-heading line-reveal"><h2 id="reviews-title">REAL WORDS.<br /><span>REAL PEOPLE.</span></h2></div>
+          <div class="reviews-layout">
+            <div class="review-display reveal"><div data-reviews aria-live="polite"><p class="feature-note">Loading client reviews…</p></div></div>
+            <form class="acerbox-form reveal" data-review-form>
+              <h3>LEAVE A REVIEW</h3><p class="feature-note">Worked with Acerbox? Share your experience. Reviews are published only after approval.</p>
+              <label for="review-name">Your name</label><input id="review-name" name="client_name" autocomplete="name" required minlength="2" maxlength="100" />
+              <fieldset class="rating-field"><legend>Your rating</legend><div class="star-options">
+                <label><input type="radio" name="rating" value="1" required /><span>1 ★</span><i class="sr-only">1 star</i></label>
+                <label><input type="radio" name="rating" value="2" /><span>2 ★</span><i class="sr-only">2 stars</i></label>
+                <label><input type="radio" name="rating" value="3" /><span>3 ★</span><i class="sr-only">3 stars</i></label>
+                <label><input type="radio" name="rating" value="4" /><span>4 ★</span><i class="sr-only">4 stars</i></label>
+                <label><input type="radio" name="rating" value="5" /><span>5 ★</span><i class="sr-only">5 stars</i></label>
+              </div></fieldset>
+              <label for="review-text">Your experience</label><textarea id="review-text" name="review_text" rows="5" required minlength="10" maxlength="2000" aria-describedby="review-limit"></textarea><small id="review-limit" class="feature-note">10–2,000 characters. Your name, rating, and review will be public if approved.</small>
+              <div class="form-trap" aria-hidden="true"><label>Leave this empty<input name="website" tabindex="-1" autocomplete="off" /></label></div>
+              <p class="form-feedback" role="status" aria-live="polite" data-feedback></p>
+              <button class="button button-primary" type="submit"><span>Submit for approval</span><b>↗</b></button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section class="booking-section section" id="booking" aria-labelledby="booking-title">
+        <div class="shell">
+          <p class="eyebrow reveal">Make time for your next idea</p>
+          <div class="section-heading line-reveal"><h2 id="booking-title">LET’S MAKE<br /><span>A DATE.</span></h2></div>
+          <p class="booking-intro reveal">Choose a consultation call or a shoot window. Send a request, and Acerbox will follow up personally to confirm the details.</p>
+          <form class="acerbox-form booking-layout reveal" data-booking-form>
+            <div class="booking-schedule">
+              <label for="booking-type">01 / What are we planning?</label><select id="booking-type" name="booking_type" required><option value="consultation">Consultation Call</option><option value="shoot">Shoot Day</option></select>
+              <p class="feature-note" data-booking-description>Consultation duration and available times will load below.</p>
+              <div class="calendar-heading"><button type="button" data-calendar-prev aria-label="Previous month">←</button><h3 data-calendar-month>Available dates</h3><button type="button" data-calendar-next aria-label="Next month">→</button></div>
+              <p class="feature-note" data-calendar-status role="status">Loading availability…</p>
+              <div class="calendar-week" aria-hidden="true"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div>
+              <div class="calendar-dates" data-calendar-dates role="group" aria-label="Choose an available date"></div>
+              <div class="calendar-legend"><span><i class="available"></i>Available</span><span><i class="reserved"></i>Booked</span><span><i class="unavailable"></i>Unavailable / past</span></div>
+              <p class="selected-date feature-note" data-selected-date>No date selected.</p>
+              <label for="booking-time">02 / Choose your time</label><select id="booking-time" name="slot" required disabled><option value="">Choose an available date first</option></select>
+              <button class="text-link availability-refresh" type="button" data-refresh-availability>Refresh availability ↗</button>
+            </div>
+            <div class="booking-details">
+              <h3>03 / YOUR DETAILS</h3>
+              <label for="booking-name">Name</label><input id="booking-name" name="name" required minlength="2" maxlength="100" autocomplete="name" />
+              <label for="booking-email">Email</label><input id="booking-email" name="email" type="email" required maxlength="254" autocomplete="email" />
+              <label for="booking-phone">Phone <small>(optional)</small></label><input id="booking-phone" name="phone" type="tel" maxlength="40" autocomplete="tel" />
+              <label for="booking-notes">Tell me about your project <small>(optional)</small></label><textarea id="booking-notes" name="notes" rows="4" maxlength="2000"></textarea>
+              <div class="form-trap" aria-hidden="true"><label>Leave this empty<input name="website" tabindex="-1" autocomplete="off" /></label></div>
+              <p class="feature-note">This is a request, not a confirmed appointment. Contact details stay private and are used to follow up on your booking.</p>
+              <p class="form-feedback" role="status" aria-live="polite" data-feedback></p>
+              <button class="button button-primary" type="submit"><span>Send booking request</span><b>↗</b></button>
+            </div>
+          </form>
         </div>
       </section>
 
