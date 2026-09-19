@@ -1,5 +1,7 @@
 # Owner booking emails
 
+SUPERSEDED for new public requests: the user chose email-only mailto booking. Read MAILTO-BOOKING.md. Do not enable automatic mail or the retry cron for this version. The implementation below is retained for legacy compatibility only.
+
 Customers use the existing homepage calendar, select an owner-published available date/time, fill in contact/project details and submit. The request and notification queue entry are saved in one transaction. Pending reservations continue to prevent double-booking. Reviews are unchanged.
 
 The owner receives a plain-text notification at `Acerbox27@gmail.com`. Its Reply-To is the customer's validated email address, so the owner can click Reply in their email app and respond manually. No automatic customer email is sent. The homepage footer now links to the authenticated owner dashboard. This link does not bypass login.

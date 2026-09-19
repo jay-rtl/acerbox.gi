@@ -325,7 +325,7 @@
         <div class="shell">
           <p class="eyebrow reveal">Make time for your next idea</p>
           <div class="section-heading line-reveal"><h2 id="booking-title">LET’S MAKE<br /><span>A DATE.</span></h2></div>
-          <p class="booking-intro reveal">Choose an available date and time, then tell us about your project. Jake will follow up personally by email to confirm the details.</p>
+          <p class="booking-intro reveal">Choose an available date and time, then tell us about your project. We’ll prepare an email to Jake—send it from your email app and he’ll reply personally.</p>
           <form class="acerbox-form booking-layout reveal" data-booking-form>
             <div class="booking-schedule">
               <label for="booking-type">01 / What are we planning?</label><select id="booking-type" name="booking_type" required><option value="consultation">Consultation Call</option><option value="shoot">Shoot Day</option></select>
@@ -346,9 +346,16 @@
               <label for="booking-phone">Phone <small>(optional)</small></label><input id="booking-phone" name="phone" type="tel" maxlength="40" autocomplete="tel" />
               <label for="booking-notes">Tell me about your project <small>(optional)</small></label><textarea id="booking-notes" name="notes" rows="4" maxlength="2000"></textarea>
               <div class="form-trap" aria-hidden="true"><label>Leave this empty<input name="website" tabindex="-1" autocomplete="off" /></label></div>
-              <p class="feature-note">This is a request, not a confirmed appointment. Contact details stay private and are used to follow up on your booking.</p>
+              <p class="feature-note">This opens your email app; you must click Send there. Your request is not saved in the dashboard and no time is reserved. Jake will reply manually to confirm availability.</p>
               <p class="form-feedback" role="status" aria-live="polite" data-feedback></p>
-              <button class="button button-primary" type="submit"><span>Send booking request</span><b>↗</b></button>
+              <button class="button button-primary" type="submit" disabled><span>Continue to email</span><b>↗</b></button>
+              <noscript><p class="feature-note">Enable JavaScript to choose a date and prepare your email, or email Acerbox27@gmail.com directly.</p></noscript>
+              <div data-email-draft hidden>
+                <p class="feature-note">Send to <a href="mailto:Acerbox27@gmail.com">Acerbox27@gmail.com</a>. No email app? Copy these details into Gmail or your preferred email service.</p>
+                <label for="booking-email-draft">Your email draft</label><textarea id="booking-email-draft" rows="10" readonly data-email-text></textarea>
+                <button class="availability-refresh" type="button" data-copy-email>Copy email details</button>
+                <a class="text-link" data-email-link>Open email app ↗</a>
+              </div>
             </div>
           </form>
         </div>

@@ -44,7 +44,7 @@ try {
     }
     if ($route==='logout') { admin(); $_SESSION=[]; session_destroy(); respond(['message'=>'Signed out.']); }
     if ($route==='reviews') respond(submitReview($data),201);
-    if ($route==='bookings') respond(submitBooking($data),201);
+    if ($route==='bookings') fail(410,'Booking requests are now email-only. Use the homepage to prepare an email to Acerbox. Nothing has been reserved.');
     if (str_starts_with($route,'admin/')) {
         admin();
         $actions=[

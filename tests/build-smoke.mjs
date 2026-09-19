@@ -12,6 +12,7 @@ test('compiled public HTML and all linked JS/CSS load from relative paths',async
 test('compiled management HTML and its linked assets load',async()=>{
   const response = await fetch(`${origin}/admin.html`);assert.equal(response.status,200);const html=await response.text();
   assert.ok(html.includes('noindex,nofollow'));
+  assert.ok(html.includes('data-admin-reviews') && !html.includes('data-admin-bookings') && !html.includes('id="admin-availability"'));
   for(const match of html.matchAll(/(?:src|href)="(\.\/assets\/[^" ]+\.(?:css|js))"/g))assert.equal(await status(new URL(match[1],`${origin}/`)),200);
 });
 test('compiled PHP entrypoint resolves the private local backend',async()=>{

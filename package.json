@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "test:backend": "node --test tests/backend.test.mjs",
     "test:browser": "node tests/browser.mjs",
-    "test:build": "node --test tests/build-smoke.mjs"
+    "test:build": "node --test tests/build-smoke.mjs",
+    "test:email-draft": "node --test tests/booking-email.test.mjs"
   },
   "dependencies": {
     "gsap": "^3.13.0"

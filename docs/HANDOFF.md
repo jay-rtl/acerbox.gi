@@ -14,6 +14,8 @@ Local PHP, MariaDB binaries, database contents, sessions, and generated credenti
 
 ## Hosting progress
 
+CURRENT BOOKING FLOW: email-only via mailto, explicitly requested by the user. Read MAILTO-BOOKING.md first. No new bookings are saved/reserved or automatically emailed by the website. The owner replies and manages bookings manually. The dashboard is now REVIEW-ONLY: booking and availability sections have been removed without deleting stored data. The homepage calendar still respects existing backend blocks/reservations, but this dashboard no longer has controls to modify them. This supersedes earlier automatic notifications and dashboard scheduling instructions.
+
 Latest availability behavior: future dates are available by default, with owner-managed date/time blocks. Read DEFAULT-AVAILABILITY.md and apply migration 003 after 001/002 on approved staging. This supersedes the original manual-only availability setup.
 
 The user created `staging.acerboxbuilds.com` in Hostinger. Its document root was shown as `public_html/staging`. No feature files or database were deployed by Codex. File Manager currently redirects the user to an expired-session login screen; Hostinger support may be needed to restore access.

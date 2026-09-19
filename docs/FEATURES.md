@@ -1,5 +1,7 @@
 # Reviews and booking: local setup and safe staging
 
+CURRENT FLOW: homepage booking is email-only via mailto; read MAILTO-BOOKING.md. Customers send the prepared email themselves, the owner replies manually, and no new request is saved or reserved. Earlier pending/automatic-mail instructions below describe the previous implementation and legacy data only. Reviews remain unchanged.
+
 Availability now defaults to open future dates with owner-managed date/time blocks. See DEFAULT-AVAILABILITY.md for current behavior; it supersedes the original manual-only slot setup below. Owner email setup is described in BOOKING-EMAIL.md.
 
 These features have NOT been deployed. No GitHub push is required for local work. Do not push `main`: the existing workflow deploys it automatically.

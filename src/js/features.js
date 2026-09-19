@@ -1,4 +1,5 @@
 import { api, refreshContext, feedback, busy, formError } from './api.js';
+import { createBookingEmail } from './booking-email.js';
 
 function element(tag, text, className) {
   const node = document.createElement(tag);
@@ -53,6 +54,15 @@ function initBooking() {
   const monthTitle = form.querySelector('[data-calendar-month]');
   const previous = form.querySelector('[data-calendar-prev]');
   const next = form.querySelector('[data-calendar-next]');
+  const draftPanel = form.querySelector('[data-email-draft]');
+  const draftText = form.querySelector('[data-email-text]');
+  const draftLink = form.querySelector('[data-email-link]');
+  function clearDraft() { draftPanel.hidden = true; draftText.value = ''; draftLink.removeAttribute('href'); }
+  form.addEventListener('input', clearDraft);
+  form.querySelector('[data-copy-email]').addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(draftText.value); feedback(form, 'Email details copied. Paste them into an email to Acerbox27@gmail.com and click Send.'); }
+    catch { draftText.focus(); draftText.select(); feedback(form, 'Select and copy the email details below, then paste them into your email app.'); }
+  });
   previous.disabled = true; next.disabled = true;
   let availability = null;
   let month = null;
@@ -62,6 +72,7 @@ function initBooking() {
   const displayTime = (value) => new Date(`2000-01-01T${value}:00`).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
 
   function selectDate(date) {
+    clearDraft();
     selectedDate = date;
     form.querySelector('[data-selected-date]').textContent = date ? dateObject(date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }) : 'No date selected.';
     time.replaceChildren(new Option(date ? 'Choose an available time' : 'Choose an available date first', ''));
@@ -120,23 +131,23 @@ function initBooking() {
   next.addEventListener('click', () => { month = new Date(month.getFullYear(), month.getMonth() + 1, 1, 12); selectDate(''); });
   type.addEventListener('change', () => selectDate(''));
   form.querySelector('[data-refresh-availability]').addEventListener('click', load);
-  form.addEventListener('submit', async (event) => {
+  form.addEventListener('submit', (event) => {
     event.preventDefault();
     if (form.getAttribute('aria-busy') === 'true') return;
     const slot = availability?.slots.find((item) => item.id === Number(time.value) && item.status === 'available' && item.date === selectedDate && item.booking_type === type.value);
     if (!slot) { feedback(form, 'Choose an available date and time first.', true); return; }
     const data = Object.fromEntries(new FormData(form));
-    data.id = slot.id; data.date = slot.date; data.time = slot.time;
-    delete data.slot;
-    busy(form, true); feedback(form, 'Sending your booking request…');
-    try {
-      const result = await api('bookings', data);
-      form.reset(); await load(); feedback(form, result.message);
-    } catch (error) {
-      formError(form, error);
-      if (error.status === 409) await load();
-    } finally { busy(form, false); }
+    if (data.website) { feedback(form, 'Unable to prepare this request.', true); return; }
+    if (!form.reportValidity()) return;
+    if (data.name.trim().length < 2) { feedback(form, 'Enter your name using at least two characters.', true); form.elements.name.focus(); return; }
+    const draft = createBookingEmail(data, slot, availability.timezone);
+    draftText.value = draft.body; draftLink.href = draft.href; draftPanel.hidden = false;
+    feedback(form, draft.copyRequired
+      ? 'Your draft is ready. Copy the details below, open your email app, paste them and click Send. Nothing has been sent or reserved.'
+      : 'Opening your email app. Click Send there to contact Jake. Nothing has been sent or reserved by this website. If no app opens, copy the draft below.');
+    if (!draft.copyRequired) draftLink.click();
   });
+  form.querySelector('[type="submit"]').disabled = false;
   load();
 }
 

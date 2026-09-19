@@ -24,7 +24,7 @@ class Client {
   async init() { const result = await this.call('context'); assert.equal(result.status, 200); return this; }
   async login() { await this.init(); assert.equal((await this.call('login', { username: 'jake', password })).status, 200); return this; }
 }
-let visitor; let admin; let slots; let date; let reviewId; let bookingId;
+let visitor; let admin; let slots; let date; let reviewId;
 const review = () => ({ client_name: 'Test Client', rating: 5, review_text: 'Development test review. Not a real testimonial.', website: '' });
 const booking = (slot) => ({ id: slot.id, name: 'Test Client', email: 'client@example.invalid', phone: '', notes: 'Development test booking', booking_type: slot.booking_type, date: slot.date, time: slot.time, website: '' });
 
@@ -77,50 +77,19 @@ describe('Acerbox isolated PHP/MySQL integration', { concurrency: false }, () =>
     assert.equal((await admin.call('admin/reviews/delete', { id: reviewId })).status, 200);
     assert.ok(!(await admin.call('admin/reviews')).body.reviews.some((row) => Number(row.id) === reviewId));
   });
-  it('rejects invalid booking emails', async () => assert.equal((await visitor.call('bookings', { ...booking(slots[0]), email: 'invalid' })).status, 422));
-  it('rejects empty booking names', async () => assert.equal((await visitor.call('bookings', { ...booking(slots[0]), name: '' })).status, 422));
-  it('rejects impossible calendar dates', async () => assert.equal((await visitor.call('bookings', { ...booking(slots[0]), date: '2026-02-30' })).status, 422));
-  it('rejects unsupported booking types', async () => assert.equal((await visitor.call('bookings', { ...booking(slots[0]), booking_type: 'fake' })).status, 422));
-  it('rejects oversized optional booking notes', async () => assert.equal((await visitor.call('bookings', { ...booking(slots[0]), notes: 'x'.repeat(2001) })).status, 422));
-  it('rejects invalid phone text', async () => assert.equal((await visitor.call('bookings', { ...booking(slots[0]), phone: '<script>' })).status, 422));
-  it('rejects unavailable slot IDs', async () => assert.equal((await visitor.call('bookings', { ...booking(slots[0]), id: 99999999 })).status, 409));
-  it('rejects forged slot dates and times', async () => assert.equal((await visitor.call('bookings', { ...booking(slots[0]), time: '23:00' })).status, 422));
-  it('rejects past bookings', async () => {
-    const past = JSON.parse(execFileSync(php, ['tests/db-tools.php', 'past'], { encoding: 'utf8' }));
-    const yesterday = new Date(`${date}T12:00:00`); yesterday.setDate(yesterday.getDate() - 2);
-    assert.equal((await visitor.call('bookings', { ...booking(slots[0]), id: Number(past.id), date: yesterday.toISOString().slice(0,10), time: '10:00' })).status, 422);
+  it('retired booking endpoint never creates or queues an email-only request', async () => {
+    assert.equal((await visitor.call('bookings', booking(slots[0]))).status, 410);
+    assert.deepEqual((await admin.call('admin/bookings')).body.bookings, []);
+    assert.equal(execFileSync(php, ['tests/db-tools.php', 'counts'], { encoding: 'utf8' }).trim(), '0,0');
   });
-  it('valid consultation booking defaults to pending despite a forged status', async () => {
-    const slot = slots.find((row) => row.booking_type === 'consultation' && row.time === '10:00');
-    assert.equal((await visitor.call('bookings', { ...booking(slot), status: 'confirmed' })).status, 201);
-    const rows = (await admin.call('admin/bookings')).body.bookings;
-    assert.equal(rows[0].status, 'pending'); bookingId = rows[0].id;
-  });
-  it('same slot cannot be booked twice', async () => {
-    const slot = slots.find((row) => row.booking_type === 'consultation' && row.time === '10:00');
-    assert.equal((await visitor.call('bookings', booking(slot))).status, 409);
-  });
-  it('overlapping shoot and consultation intervals conflict', async () => assert.equal((await visitor.call('bookings', booking(slots.find((row) => row.booking_type === 'shoot')))).status, 409));
-  it('availability marks reservations booked and exposes no customer data', async () => {
+  it('public availability exposes no customer data', async () => {
     const result = (await visitor.call('availability')).body;
-    assert.ok(result.slots.some((slot) => slot.status === 'booked'));
     const text = JSON.stringify(result); for (const value of ['client@example.invalid','Test Client','Development test booking']) assert.ok(!text.includes(value));
     for (const slot of result.slots) assert.deepEqual(Object.keys(slot).sort(), ['booking_type','date','end_time','id','status','time']);
   });
   it('anonymous visitors cannot read booking details', async () => assert.equal((await visitor.call('admin/bookings')).status, 401));
-  it('anonymous visitors cannot confirm bookings', async () => assert.equal((await visitor.call('admin/bookings/confirm', { id: bookingId })).status, 401));
-  it('anonymous visitors cannot cancel bookings', async () => assert.equal((await visitor.call('admin/bookings/cancel', { id: bookingId })).status, 401));
-  it('Jake can confirm bookings', async () => {
-    assert.equal((await admin.call('admin/bookings/confirm', { id: bookingId })).status, 200);
-    assert.equal((await admin.call('admin/bookings')).body.bookings.find((row) => row.id === bookingId).status, 'confirmed');
-  });
-  it('Jake can cancel and release a booking', async () => {
-    assert.equal((await admin.call('admin/bookings/cancel', { id: bookingId })).status, 200);
-    const rows = (await visitor.call('availability')).body.slots;
-    assert.equal(rows.find((row) => row.booking_type === 'shoot').status, 'available');
-  });
-  it('valid shoot-day request is accepted with a longer interval', async () => assert.equal((await visitor.call('bookings', booking(slots.find((row) => row.booking_type === 'shoot')))).status, 201));
-  it('cancelled bookings cannot be silently reopened', async () => assert.equal((await admin.call('admin/bookings/confirm', { id: bookingId })).status, 409));
+  it('anonymous visitors cannot confirm legacy bookings', async () => assert.equal((await visitor.call('admin/bookings/confirm', { id: 1 })).status, 401));
+  it('anonymous visitors cannot cancel legacy bookings', async () => assert.equal((await visitor.call('admin/bookings/cancel', { id: 1 })).status, 401));
   it('rejects past admin availability', async () => assert.equal((await admin.call('admin/availability/add', { booking_type: 'consultation', date: '2020-01-01', time: '10:00' })).status, 422));
   it('rejects invalid shoot windows', async () => assert.equal((await admin.call('admin/availability/add', { booking_type: 'shoot', date, time: '14:00', end_time: '10:00' })).status, 422));
   it('Jake can create consultation availability', async () => assert.equal((await admin.call('admin/availability/add', { booking_type: 'consultation', date, time: '16:00' })).status, 200));
@@ -133,22 +102,21 @@ describe('Acerbox isolated PHP/MySQL integration', { concurrency: false }, () =>
   it('anonymous visitors cannot block a time range', async () => assert.equal((await visitor.call('admin/availability/block-window', { date, time: '15:00', end_time: '16:00' })).status, 401));
   it('Jake blocks and unblocks a time range through the API', async () => {
     assert.equal((await admin.call('admin/availability/block-window', { date, time: '15:00', end_time: '16:00' })).status, 200);
-    assert.equal((await visitor.call('bookings', booking(slots.find((row) => row.time === '15:00' && row.booking_type === 'consultation')))).status, 409);
+    assert.equal((await visitor.call('availability')).body.slots.find((row) => row.date === date && row.time === '15:00' && row.booking_type === 'consultation').status, 'blocked');
     const block = (await admin.call('admin/availability')).body.blocked_windows.find((row) => row.date === date);
     assert.equal((await admin.call('admin/availability/unblock-window', { id: block.id })).status, 200);
   });
-  it('blocked dates reject reservations', async () => {
+  it('blocked dates are unavailable in the calendar', async () => {
     await admin.call('admin/availability/block', { date });
-    assert.equal((await visitor.call('bookings', booking(slots.find((row) => row.time === '15:00')))).status, 409);
     assert.ok((await visitor.call('availability')).body.slots.filter((row) => row.date === date).every((row) => row.status === 'blocked'));
     await admin.call('admin/availability/unblock', { date });
   });
-  it('two independent API workers cannot reserve the same interval simultaneously', async () => {
+  it('neither API worker accepts retired booking submissions', async () => {
     const one = await new Client().init(); const two = await new Client().init();
     await new Promise((resolve) => setTimeout(resolve, 2100));
     const slot = slots.find((row) => row.time === '15:00');
     const results = await Promise.all([one.call('bookings', booking(slot), {}, 8081),two.call('bookings', booking(slot), {}, 8082)]);
-    assert.deepEqual(results.map((result) => result.status).sort(), [201,409]);
+    assert.deepEqual(results.map((result) => result.status).sort(), [410,410]);
   });
   it('minimum submission time blocks instant submissions', async () => {
     const instant = await new Client().init(); assert.equal((await instant.call('reviews', { ...review(), client_name: 'Instant Client' })).status, 429);

@@ -1,5 +1,7 @@
 # Available by default
 
+New public requests now use email-only mailto booking, with no automatic reservation or saved request. Read MAILTO-BOOKING.md. Existing legacy reservations still affect the calendar; the owner must block new appointments agreed by email manually.
+
 Every day in the next 90 days now has default time slots, without the owner having to add availability first. Defaults: 9 AM–5 PM America/New_York, 30-minute consultations and two four-hour shoot windows. These are starting assumptions, configurable through private availability_start_hour, availability_end_hour, consultation_minutes and shoot_minutes. Default hours are not 24/7 availability.
 
 The owner can block a whole date or a same-day time range from the protected dashboard, and unblock it later. Time ranges apply to both services: any overlapping slot is blocked. Existing pending/confirmed requests remain reserved and are not silently cancelled by blocking. Cancel a request separately to release its interval. Removing an individual time window is also persistent; regeneration does not reactivate it. Add that exact window again to restore it.
