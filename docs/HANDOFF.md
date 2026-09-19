@@ -14,6 +14,8 @@ Local PHP, MariaDB binaries, database contents, sessions, and generated credenti
 
 ## Hosting progress
 
+Latest availability behavior: future dates are available by default, with owner-managed date/time blocks. Read DEFAULT-AVAILABILITY.md and apply migration 003 after 001/002 on approved staging. This supersedes the original manual-only availability setup.
+
 The user created `staging.acerboxbuilds.com` in Hostinger. Its document root was shown as `public_html/staging`. No feature files or database were deployed by Codex. File Manager currently redirects the user to an expired-session login screen; Hostinger support may be needed to restore access.
 
 IMPORTANT: That staging directory is nested inside the live site's public root. The generic sibling-folder deployment example in FEATURES.md assumes a document root named public_html. Do NOT place private backend files or credentials beside this nested staging folder: they could be exposed through the live domain. Before any staging upload, arrange genuinely private storage outside the entire public_html tree and adapt the API loader's private path (or ACERBOX_PRIVATE_DIR) to the staging backend. Keep staging database credentials, sessions and secrets separate from production.
@@ -24,4 +26,4 @@ The old acerbox-hostinger.zip is not the new full-stack release. GitHub Pages ca
 
 The original PC passed 54 backend checks, 40 browser checks and 6 compiled-build checks (100 total), plus the Vite build and syntax checks. This is a previous-machine result, not proof of correctness on a new machine or Hostinger. Repeat relevant tests after environment setup. Physical iPhone Safari/Android QA remains outstanding.
 
-No automatic email/calendar integration is enabled. Reviews are pending until Jake approves them. Pending bookings reserve capacity until confirmed or cancelled. See FEATURES.md for the full operational details.
+Owner booking email notifications have since been implemented; see BOOKING-EMAIL.md for the new migration, private configuration, retry cron and mail-host verification requirements. They are disabled locally by default and have not been tested for real inbox delivery. No automatic customer email or external calendar integration is enabled. Reviews are pending until Jake approves them. Pending bookings reserve capacity until confirmed or cancelled. See FEATURES.md for the full operational details.

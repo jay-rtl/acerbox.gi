@@ -24,7 +24,7 @@ try {
         if ($route==='admin/reviews') { admin(); respond(['reviews'=>query('SELECT id,client_name,rating,review_text,status,created_at FROM ab_reviews ORDER BY id DESC LIMIT 500')->fetchAll()]); }
         if ($route==='admin/bookings') { admin(); respond(['bookings'=>array_map('bookingDTO',query('SELECT * FROM ab_bookings ORDER BY starts_at DESC LIMIT 500')->fetchAll())]); }
         if ($route==='admin/availability') {
-            admin(); respond(['slots'=>array_map('slotDTO',query('SELECT * FROM ab_slots WHERE active=1 ORDER BY starts_at DESC LIMIT 500')->fetchAll()),'blocked_dates'=>query('SELECT blocked_date FROM ab_blocked_dates ORDER BY blocked_date')->fetchAll(PDO::FETCH_COLUMN)]);
+            admin(); respond(['slots'=>array_map('slotDTO',query('SELECT * FROM ab_slots WHERE active=1 AND starts_at >= UTC_TIMESTAMP() ORDER BY starts_at LIMIT 500')->fetchAll()),'blocked_dates'=>query('SELECT blocked_date FROM ab_blocked_dates ORDER BY blocked_date')->fetchAll(PDO::FETCH_COLUMN),'blocked_windows'=>array_map('slotDTO',query("SELECT *, 'all' AS booking_type FROM ab_blocked_windows ORDER BY starts_at")->fetchAll())]);
         }
         fail(404,'Endpoint not found.');
     }
@@ -57,6 +57,8 @@ try {
             'admin/availability/remove'=>fn()=>changeAvailability($data,'remove'),
             'admin/availability/block'=>fn()=>changeAvailability($data,'block'),
             'admin/availability/unblock'=>fn()=>changeAvailability($data,'unblock'),
+            'admin/availability/block-window'=>fn()=>changeAvailability($data,'block-window'),
+            'admin/availability/unblock-window'=>fn()=>changeAvailability($data,'unblock-window'),
         ];
         if (isset($actions[$route])) respond($actions[$route]());
     }

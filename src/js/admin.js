@@ -77,8 +77,13 @@ async function load() {
     availability.blocked_dates.forEach((date) => {
       const item = node('article', '', 'admin-record'); item.append(node('p', date), actions(action('Unblock', 'admin/availability/unblock', { date }))); blockList.append(item);
     });
+    availability.blocked_windows.forEach((window) => {
+      const item = node('article', '', 'admin-record');
+      item.append(node('p', `${window.date} / ${window.time}–${window.end_time} / All services`), actions(action('Unblock time range', 'admin/availability/unblock-window', { id: window.id })));
+      blockList.append(item);
+    });
     if (!availability.slots.length) slotList.append(node('p', 'No availability configured. Add a time window above.', 'feature-note'));
-    if (!availability.blocked_dates.length) blockList.append(node('p', 'No blocked dates.', 'feature-note'));
+    if (!availability.blocked_dates.length && !availability.blocked_windows.length) blockList.append(node('p', 'No blocked dates or time ranges. Future dates are available by default.', 'feature-note'));
   } catch (error) { errorMessage(error); }
   finally { content.setAttribute('aria-busy', 'false'); }
 }
@@ -99,7 +104,7 @@ document.querySelector('[data-review-filter]').addEventListener('change', render
 document.querySelector('[data-booking-filter]').addEventListener('change', renderBookings);
 const slotForm = document.querySelector('[data-slot-form]');
 slotForm.elements.booking_type.addEventListener('change', () => { const shoot = slotForm.elements.booking_type.value === 'shoot'; slotForm.elements.end_time.disabled = !shoot; slotForm.elements.end_time.required = shoot; });
-for (const [selector, route] of [['[data-slot-form]', 'admin/availability/add'], ['[data-block-form]', 'admin/availability/block']]) {
+for (const [selector, route] of [['[data-slot-form]', 'admin/availability/add'], ['[data-block-form]', 'admin/availability/block'], ['[data-block-window-form]', 'admin/availability/block-window']]) {
   const form = document.querySelector(selector);
   form.addEventListener('submit', async (event) => {
     event.preventDefault(); if (form.getAttribute('aria-busy') === 'true') return;

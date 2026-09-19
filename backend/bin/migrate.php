@@ -5,5 +5,5 @@ require dirname(__DIR__) . '/bootstrap.php';
 if (config()['env'] === 'production' && !in_array('--allow-production', $argv, true)) {
     fwrite(STDERR,"Refusing production migration without explicit --allow-production.\n"); exit(1);
 }
-db()->exec(file_get_contents(dirname(__DIR__) . '/migrations/001_features.sql'));
+foreach (glob(dirname(__DIR__) . '/migrations/*.sql') as $migration) db()->exec(file_get_contents($migration));
 echo "Additive feature migration applied to ", config()['db_name'], ".\n";

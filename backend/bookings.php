@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+require_once __DIR__ . '/booking-mail.php';
 
 function submitBooking(array $data): array {
     spamCheck($data);
@@ -17,7 +18,12 @@ function submitBooking(array $data): array {
     $time=textField($data,'time',5,5);
     localDateTime($date,$time);
     rateLimit('booking',8);
-    return createReservation($id,$type,$date,$time,$name,$email,$phone,$notes);
+    $result=createReservation($id,$type,$date,$time,$name,$email,$phone,$notes);
+    // Delivery is outside the reservation transaction; a mail failure never loses the request.
+    try { dispatchBookingMail($result['notification_id']); }
+    catch (Throwable $error) { error_log('Acerbox booking notification deferred; retry the private mail queue.'); }
+    unset($result['notification_id']);
+    return $result;
 }
 
 function createReservation(int $id,string $type,string $date,string $time,string $name,string $email,string $phone,string $notes): array {
@@ -27,9 +33,12 @@ function createReservation(int $id,string $type,string $date,string $time,string
         $start=local($slot['starts_at']);
         if ($start->format('Y-m-d')!==$date || $start->format('H:i')!==$time) fail(422,'The selected date and time do not match this slot.');
         if ($start <= new DateTimeImmutable('now')) fail(422,'Choose a future date and time.');
-        if (query('SELECT blocked_date FROM ab_blocked_dates WHERE blocked_date=?',[$date])->fetch() || overlaps($slot['starts_at'],$slot['ends_at'])) fail(409,'That time is no longer available. Please choose another.');
+        if ($start->format('Y-m-d') > (new DateTimeImmutable('+90 days',new DateTimeZone(config()['timezone'])))->format('Y-m-d')) fail(422,'Choose a date within the next 90 days.');
+        if (query('SELECT blocked_date FROM ab_blocked_dates WHERE blocked_date=?',[$date])->fetch() || windowBlocked($slot['starts_at'],$slot['ends_at']) || overlaps($slot['starts_at'],$slot['ends_at'])) fail(409,'That time is no longer available. Please choose another.');
         query('INSERT INTO ab_bookings(slot_id,name,email,phone,booking_type,starts_at,ends_at,notes) VALUES (?,?,?,?,?,?,?,?)',[$id,$name,$email,$phone,$type,$slot['starts_at'],$slot['ends_at'],$notes]);
-        return ['message'=>'Your booking request has been received. Acerbox will follow up to confirm availability.'];
+        $bookingId=(int)db()->lastInsertId();
+        query('INSERT INTO ab_booking_mail(booking_id) VALUES (?)',[$bookingId]);
+        return ['message'=>'Your booking request has been received. Acerbox will follow up to confirm the details by email. This is not a confirmed appointment.','notification_id'=>$bookingId];
     });
 }
 

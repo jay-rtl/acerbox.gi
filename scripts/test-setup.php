@@ -2,11 +2,11 @@
 declare(strict_types=1);
 if (PHP_SAPI!=='cli') exit('CLI only');
 putenv('ACERBOX_ENV=test'); putenv('ACERBOX_DB_NAME=acerbox_test'); putenv('ACERBOX_DB_USER=acerbox_test');
-require dirname(__DIR__) . '/backend/bootstrap.php';
+require_once dirname(__DIR__) . '/backend/bootstrap.php';
 $c=config();
 if ($c['env']!=='test' || $c['db_name']!=='acerbox_test' || $c['db_host']!=='127.0.0.1' || (int)$c['db_port']!==3307) { fwrite(STDERR,"Refusing to reset anything except loopback acerbox_test on 3307.\n"); exit(1); }
-db()->exec(file_get_contents(dirname(__DIR__) . '/backend/migrations/001_features.sql'));
-foreach (['ab_bookings','ab_slots','ab_reviews','ab_blocked_dates','ab_rate_limits'] as $table) db()->exec("DELETE FROM $table");
+foreach (glob(dirname(__DIR__) . '/backend/migrations/*.sql') as $migration) db()->exec(file_get_contents($migration));
+foreach (['ab_booking_mail','ab_bookings','ab_slots','ab_reviews','ab_blocked_dates','ab_blocked_windows','ab_rate_limits'] as $table) db()->exec("DELETE FROM $table");
 $tomorrow=(new DateTimeImmutable('tomorrow',new DateTimeZone($c['timezone'])))->format('Y-m-d');
 require dirname(__DIR__) . '/backend/availability.php';
 foreach ([['consultation','10:00',null],['consultation','11:00',null],['shoot','10:00','14:00'],['consultation','15:00',null]] as [$type,$time,$end]) {

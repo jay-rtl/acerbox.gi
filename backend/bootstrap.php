@@ -7,7 +7,9 @@ function config(): array {
     $local = is_file(__DIR__ . '/config.local.php') ? require __DIR__ . '/config.local.php' : [];
     $defaults = ['env'=>'production','origin'=>'https://acerboxbuilds.com','timezone'=>'America/New_York',
         'db_host'=>'127.0.0.1','db_port'=>3306,'db_name'=>'','db_user'=>'','db_password'=>'',
-        'admin_username'=>'jake','admin_password_hash'=>'','app_key'=>'','consultation_minutes'=>30,'session_path'=>''];
+        'admin_username'=>'jake','admin_password_hash'=>'','app_key'=>'','consultation_minutes'=>30,'session_path'=>'',
+        'mail_enabled'=>false,'mail_to'=>'Acerbox27@gmail.com','mail_from'=>'',
+        'availability_start_hour'=>9,'availability_end_hour'=>17,'shoot_minutes'=>240];
     $config = array_replace($defaults, $local);
     foreach ($config as $key => $value) {
         $env = getenv('ACERBOX_' . strtoupper($key));
@@ -17,6 +19,7 @@ function config(): array {
         throw new RuntimeException('Private server configuration is incomplete.');
     }
     if (!in_array((int)$config['consultation_minutes'], [15,30,45,60], true)) throw new RuntimeException('Invalid consultation duration.');
+    if ((int)$config['availability_start_hour']<0 || (int)$config['availability_end_hour']>23 || (int)$config['availability_start_hour'] >= (int)$config['availability_end_hour'] || !in_array((int)$config['shoot_minutes'],[60,120,180,240,360,480],true)) throw new RuntimeException('Invalid default availability hours.');
     return $config;
 }
 

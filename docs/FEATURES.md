@@ -1,5 +1,7 @@
 # Reviews and booking: local setup and safe staging
 
+Availability now defaults to open future dates with owner-managed date/time blocks. See DEFAULT-AVAILABILITY.md for current behavior; it supersedes the original manual-only slot setup below. Owner email setup is described in BOOKING-EMAIL.md.
+
 These features have NOT been deployed. No GitHub push is required for local work. Do not push `main`: the existing workflow deploys it automatically.
 
 ## Architecture
@@ -150,7 +152,7 @@ Visitor text is rendered with DOM `textContent`; JSON transport escapes HTML-sen
 1. Obtain explicit deployment approval. Do not push `main` to deploy these PHP features: GitHub Pages hosts only static assets and will not execute this API.
 2. Create a separate staging subdomain/site and **separate staging database/user** in Hostinger; do not point staging at production data. Use HTTPS and an exact staging origin. Isolate session storage and use different secrets/passwords from production.
 3. Back up existing files/data before any approved production rollout. Confirm PHP and DB versions/extensions and host session storage.
-4. Apply the additive SQL migration manually to the intended staging database, using migration privileges. Prefer a separate runtime user limited to SELECT/INSERT/UPDATE/DELETE on the feature tables after setup.
+4. Apply the additive SQL migrations in filename order (001_features.sql, 002_booking_mail.sql, 003_blocked_windows.sql) manually to the intended staging database, using migration privileges. Prefer a separate runtime user limited to SELECT/INSERT/UPDATE/DELETE on the feature tables after setup. See BOOKING-EMAIL.md for owner email configuration and retry setup.
 5. Build locally with `npm run build`. Copy the contents of `dist/` into the staging document root ONLY after approval.
 6. Copy backend source files/migrations to a private sibling folder, excluding `config.local.php`. Example:
 
@@ -181,7 +183,7 @@ The public loader defaults to this sibling folder. If using another path, set `A
 
 ## Limitations / future extension
 
-- No automatic email or meeting link. Jake follows up directly; the UI honestly says pending request.
+- Owner booking notification emails are implemented but require private host mail configuration and delivery testing; see BOOKING-EMAIL.md. No automatic customer email or meeting link. Jake replies manually; the UI honestly says pending request.
 - Date-specific windows only; no recurring rule engine, automated pending expiry, or overnight shoots.
 - Pending requests require Jake's timely review; cancellation releases capacity.
 - Single admin account; no user portal, password recovery email, roles, or 2FA. Protect the account with a strong unique password and limit staging access.

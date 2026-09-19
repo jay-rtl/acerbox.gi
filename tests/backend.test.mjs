@@ -34,7 +34,8 @@ describe('Acerbox isolated PHP/MySQL integration', { concurrency: false }, () =>
     visitor = await new Client().init(); admin = await new Client().login();
     await new Promise((resolve) => setTimeout(resolve, 2100));
     const available = await visitor.call('availability'); assert.equal(available.status, 200);
-    slots = available.body.slots; date = slots[0].date;
+    date = new Date(Date.now() + 86400000).toLocaleDateString('en-CA', { timeZone: available.body.timezone });
+    slots = available.body.slots.filter((slot) => slot.date === date);
   });
   beforeEach(() => execFileSync(php, ['tests/db-tools.php', 'rates']));
   it('valid review is accepted and defaults to pending', async () => {
@@ -129,10 +130,17 @@ describe('Acerbox isolated PHP/MySQL integration', { concurrency: false }, () =>
     assert.ok(!(await visitor.call('availability')).body.slots.some((row) => row.id === slot.id));
   });
   it('anonymous visitors cannot change availability', async () => assert.equal((await visitor.call('admin/availability/block', { date })).status, 401));
+  it('anonymous visitors cannot block a time range', async () => assert.equal((await visitor.call('admin/availability/block-window', { date, time: '15:00', end_time: '16:00' })).status, 401));
+  it('Jake blocks and unblocks a time range through the API', async () => {
+    assert.equal((await admin.call('admin/availability/block-window', { date, time: '15:00', end_time: '16:00' })).status, 200);
+    assert.equal((await visitor.call('bookings', booking(slots.find((row) => row.time === '15:00' && row.booking_type === 'consultation')))).status, 409);
+    const block = (await admin.call('admin/availability')).body.blocked_windows.find((row) => row.date === date);
+    assert.equal((await admin.call('admin/availability/unblock-window', { id: block.id })).status, 200);
+  });
   it('blocked dates reject reservations', async () => {
     await admin.call('admin/availability/block', { date });
     assert.equal((await visitor.call('bookings', booking(slots.find((row) => row.time === '15:00')))).status, 409);
-    assert.ok((await visitor.call('availability')).body.slots.every((row) => row.status === 'blocked'));
+    assert.ok((await visitor.call('availability')).body.slots.filter((row) => row.date === date).every((row) => row.status === 'blocked'));
     await admin.call('admin/availability/unblock', { date });
   });
   it('two independent API workers cannot reserve the same interval simultaneously', async () => {
